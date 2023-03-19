@@ -31,7 +31,7 @@ export class EmployeeService {
             throw error
         }
     }
-    async updateUser(employee: EmployeeEntity, id: number) {
+    async updateUser(employee: any, id: number) {
         try {
             let result = await this.employeeRepository.update(id, employee)
             if (result) {

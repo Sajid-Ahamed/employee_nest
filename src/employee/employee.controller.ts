@@ -1,6 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger/dist';
+import { createEmployeeDto } from './dto/createEmployee.dto';
+import { updateEmployeeDto } from './dto/updateEmployee.dto';
 import { EmployeeService } from './employee.service';
 
+@ApiTags('employee')
 @Controller('employee')
 export class EmployeeController {
 
@@ -17,7 +21,8 @@ export class EmployeeController {
     }
 
     @Get(':id')
-    async getEmployeesById(@Param('id') id) {
+    @ApiResponse({ status: 200, description: 'Employee Fetched'})
+    async getEmployeesById(@Param('id') id:number) {
         try {
           let result = await this.service.getEmployeesById(id);
           return result
@@ -27,7 +32,8 @@ export class EmployeeController {
     }
 
     @Post('/add')
-    create(@Body() employee: any) {
+    @ApiResponse({ status: 200, description: 'Employee Created'})
+    create(@Body() employee: createEmployeeDto) {
         try {
             return this.service.createEmployee(employee);
         } catch (error) {
@@ -36,7 +42,8 @@ export class EmployeeController {
     }
 
     @Put('/update/:id')
-    update(@Body() employee: any,@Param('id') id: number) {
+    @ApiResponse({ status: 200, description: 'Employee Updated'})
+    async updateEmployee(@Body() employee: updateEmployeeDto,@Param('id') id: number) {
     try {
         let result = this.service.updateUser(employee, id);
         return result
@@ -46,7 +53,8 @@ export class EmployeeController {
     }
 
     @Delete('/delete/:id')
-    async deleteEmployee(@Param('id') id) {
+    @ApiResponse({ status: 200, description: 'Employee Deleted'})
+    async deleteEmployee(@Param('id') id:number) {
         try {
             return await this.service.deleteEmployee(id);
         } catch (error) {
