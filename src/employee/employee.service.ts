@@ -9,11 +9,19 @@ export class EmployeeService {
     constructor(@InjectRepository(EmployeeEntity) private employeeRepository: Repository<EmployeeEntity>) { }
 
     async getEmployees(): Promise<any[]> {
-        return await this.employeeRepository.find({where: [{"is_active": true}]});
+        try {
+            return await this.employeeRepository.find({where: [{"is_active": true}]});
+        } catch (error) {
+            throw error
+        }
     }
 
     async getEmployeesById(id: number): Promise<EmployeeEntity> {
-        return await this.employeeRepository.findOne({where: [{ "id": id , "is_active": true}]})
+        try {
+            return await this.employeeRepository.findOne({where: [{ "id": id , "is_active": true}]})
+        } catch (error) {
+            throw error
+        }
     }
 
     async createEmployee(bodyData: any) : Promise<any> {
