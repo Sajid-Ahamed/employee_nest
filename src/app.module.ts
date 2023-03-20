@@ -4,24 +4,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EmployeeEntity } from './employee/employee.entity/employee.entity';
 import { EmployeeModule } from './employee/employee.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      username: 'root',
-      password: 'password',
-      database: 'employee_db',
+      host: process.env.DATABASE_HOST,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [
         EmployeeEntity,
       ],
-      // entities: ['../typeorm/entities/*.ts'],
-
       synchronize: true,
-    }),
-    EmployeeModule],
+    }), EmployeeModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
